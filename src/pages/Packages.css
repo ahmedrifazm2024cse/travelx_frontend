@@ -1,0 +1,125 @@
+/* ===== PACKAGES PAGE ===== */
+.pkg-section {
+  padding: 60px 8% 80px;
+}
+
+/* Filter Tabs */
+.filter-tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.filter-tab {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border: 2px solid #e2e8f0;
+  border-radius: 30px;
+  background: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: 0.3s ease;
+  font-family: 'Poppins', sans-serif;
+  color: #64748b;
+}
+
+.filter-tab:hover {
+  border-color: #00B4FF;
+  color: #00B4FF;
+  background: #f0fbff;
+}
+
+.filter-tab.active {
+  background: linear-gradient(135deg, #00B4FF, #0080cc);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 6px 16px rgba(0,180,255,0.35);
+}
+
+/* Count badge inside tab */
+.tab-count {
+  background: rgba(255,255,255,0.25);
+  color: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 20px;
+  min-width: 22px;
+  text-align: center;
+}
+
+.filter-tab:not(.active) .tab-count {
+  background: #f1f5f9;
+  color: #94a3b8;
+}
+
+/* Result count text */
+.filter-result {
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+  margin-bottom: 36px;
+}
+
+.filter-result strong {
+  color: #00B4FF;
+  font-size: 16px;
+}
+
+/* Packages Grid */
+.pkg-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+
+/* Fade-in animation for filtered cards */
+.pkg-card-anim {
+  animation: cardFadeIn 0.35s ease both;
+}
+
+@keyframes cardFadeIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* No results block */
+.no-results {
+  text-align: center;
+  padding: 80px 20px;
+  color: #64748b;
+}
+
+.no-results span {
+  font-size: 56px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.no-results h3 {
+  font-size: 22px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 8px;
+}
+
+.no-results p {
+  font-size: 15px;
+  margin-bottom: 24px;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .pkg-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .pkg-grid { grid-template-columns: 1fr; }
+  .pkg-section { padding: 40px 5% 60px; }
+  .filter-tab { padding: 8px 16px; font-size: 13px; }
+}

@@ -1,0 +1,33 @@
+/* Admin Page */
+.admin-action-btn {
+  padding: 5px 12px;
+  border: none;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  text-decoration: none;
+  display: inline-block;
+  transition: 0.2s;
+}
+
+.admin-action-btn.view {
+  background: #e0f2fe;
+  color: #0284c7;
+}
+
+.admin-action-btn.edit {
+  background: #fef9c3;
+  color: #ca8a04;
+}
+
+.admin-action-btn.del {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.admin-action-btn:hover {
+  opacity: 0.8;
+  transform: scale(1.04);
+}

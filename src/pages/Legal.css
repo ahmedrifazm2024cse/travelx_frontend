@@ -1,0 +1,128 @@
+/* Legal Pages (Privacy & Terms) */
+.legal-section {
+  padding: 60px 8% 80px;
+}
+
+.legal-grid {
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 40px;
+  align-items: start;
+}
+
+.legal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.legal-intro {
+  background: linear-gradient(135deg, rgba(0,180,255,0.06), rgba(0,180,255,0.02));
+  border-left: 4px solid #00B4FF;
+  border-radius: 0 16px 16px 0;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+
+.legal-intro p {
+  color: #475569;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+.legal-block {
+  padding: 28px 0;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.legal-block:last-child {
+  border-bottom: none;
+}
+
+.legal-block h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.legal-block p {
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.85;
+}
+
+.legal-sidebar {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.legal-toc {
+  background: white;
+  border-radius: 20px;
+  padding: 24px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.07);
+}
+
+.legal-toc h4 {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 16px;
+}
+
+.toc-link {
+  display: block;
+  color: #64748b;
+  font-size: 13px;
+  padding: 7px 0;
+  border-bottom: 1px solid #f1f5f9;
+  transition: 0.3s;
+  text-decoration: none;
+}
+
+.toc-link:last-child {
+  border-bottom: none;
+}
+
+.toc-link:hover {
+  color: #00B4FF;
+  padding-left: 6px;
+}
+
+.legal-contact-box {
+  background: linear-gradient(135deg, #0f172a, #1e3a5f);
+  border-radius: 20px;
+  padding: 24px;
+  color: white;
+  text-align: center;
+}
+
+.legal-contact-box h4 {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.legal-contact-box p {
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 6px;
+}
+
+.legal-contact-box strong {
+  color: #00B4FF;
+  font-size: 14px;
+  display: block;
+}
+
+@media (max-width: 1024px) {
+  .legal-grid { grid-template-columns: 1fr; }
+  .legal-sidebar { position: static; }
+}
+@media (max-width: 640px) {
+  .legal-section { padding: 40px 5% 60px; }
+}
