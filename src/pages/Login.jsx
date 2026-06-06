@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { apiPost } from '../api'
 import './Auth.css'
 
 function Login() {
@@ -25,23 +26,19 @@ function Login() {
     return e
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length > 0) { setErrors(errs); return }
 
-    // Check against stored users
-    const users = JSON.parse(localStorage.getItem('tx_users') || '[]')
-    const user = users.find(u => u.email === form.email.trim() && u.password === form.password)
-
-    if (!user) {
-      setAuthError('Invalid email or password. Please try again.')
-      return
+    try {
+      const data = await apiPost('/api/auth/login', { email: form.email.trim(), password: form.password })
+      localStorage.setItem('tx_current_user', JSON.stringify(data.user))
+      localStorage.setItem('tx_token', data.token)
+      navigate('/dashboard')
+    } catch (err) {
+      setAuthError(err.message || 'Invalid email or password. Please try again.')
     }
-
-    // Save session
-    localStorage.setItem('tx_current_user', JSON.stringify(user))
-    navigate('/dashboard')
   }
 
   return (

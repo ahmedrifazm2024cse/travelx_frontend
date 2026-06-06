@@ -94,6 +94,7 @@ function Dashboard() {
   /* Logout */
   const handleLogout = () => {
     localStorage.removeItem('tx_current_user')
+    localStorage.removeItem('tx_token')
     navigate('/login')
   }
 

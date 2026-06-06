@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import { apiPost } from '../api'
 import './Auth.css'
 
 function ForgotPassword() {
@@ -7,23 +8,19 @@ function ForgotPassword() {
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     setError(''); setSuccess('')
 
     if (!email.trim()) { setError('Email is required'); return }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('Enter a valid email address'); return }
 
-    // Check if email exists in localStorage
-    const users = JSON.parse(localStorage.getItem('tx_users') || '[]')
-    const found = users.find(u => u.email === email.trim())
-
-    if (!found) {
-      setError('No account found with this email. Please sign up first.')
-      return
+    try {
+      await apiPost('/api/auth/forgot-password', { email: email.trim() })
+      setSuccess(`Password reset link sent to ${email}. Please check your inbox.`)
+    } catch (err) {
+      setError(err.message || 'No account found with this email.')
     }
-
-    setSuccess(`Password reset link sent to ${email}. Please check your inbox.`)
   }
 
   return (

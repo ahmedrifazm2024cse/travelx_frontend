@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { apiPost } from '../api'
 import './Auth.css'
 
 function Signup() {
@@ -46,30 +47,28 @@ function Signup() {
     return e
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     const errs = validate()
     if (Object.keys(errs).length > 0) { setErrors(errs); return }
 
-    // Check if email already exists
-    const existing = JSON.parse(localStorage.getItem('tx_users') || '[]')
-    if (existing.find(u => u.email === form.email)) {
-      setErrors({ email: 'This email is already registered. Please login.' })
-      return
+    try {
+      await apiPost('/api/auth/register', {
+        firstName: form.firstName.trim(),
+        lastName: form.lastName.trim(),
+        email: form.email.trim(),
+        phone: form.phone.trim(),
+        password: form.password,
+      })
+      setSuccess('Account created successfully! Redirecting to login...')
+      setTimeout(() => navigate('/login'), 1800)
+    } catch (err) {
+      if (err.message?.toLowerCase().includes('email')) {
+        setErrors({ email: err.message })
+      } else {
+        setErrors({ email: err.message })
+      }
     }
-
-    // Save new user
-    const newUser = {
-      firstName: form.firstName.trim(),
-      lastName: form.lastName.trim(),
-      email: form.email.trim(),
-      phone: form.phone.trim(),
-      password: form.password,
-    }
-    localStorage.setItem('tx_users', JSON.stringify([...existing, newUser]))
-
-    setSuccess('Account created successfully! Redirecting to login...')
-    setTimeout(() => navigate('/login'), 1800)
   }
 
   return (

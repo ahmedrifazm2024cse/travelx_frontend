@@ -1,9 +1,25 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { apiPost } from '../api'
 import './Enquiry.css'
 
 function Enquiry() {
+  const [status, setStatus] = useState('')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const fd = new FormData(e.target)
+    try {
+      await apiPost('/api/enquiry', Object.fromEntries(fd))
+      setStatus('success')
+      e.target.reset()
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -21,25 +37,27 @@ function Enquiry() {
           <div className="enquiry-form-box light-form">
             <h3>📋 Submit Your Enquiry</h3>
             <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '28px' }}>Our travel experts will get back to you within 24 hours with a custom quote.</p>
-            <form>
+            <form onSubmit={handleSubmit}>
+              {status === 'success' && <p style={{ color: '#16a34a', marginBottom: '16px' }}>✅ Enquiry submitted successfully!</p>}
+              {status === 'error' && <p style={{ color: '#dc2626', marginBottom: '16px' }}>❌ Failed to submit. Please try again.</p>}
               <div className="form-row2">
                 <div className="form-group">
                   <label>Full Name *</label>
-                  <input type="text" placeholder="Your full name" required />
+                  <input name="fullName" type="text" placeholder="Your full name" required />
                 </div>
                 <div className="form-group">
                   <label>Email Address *</label>
-                  <input type="email" placeholder="your@email.com" required />
+                  <input name="email" type="email" placeholder="your@email.com" required />
                 </div>
               </div>
               <div className="form-row2">
                 <div className="form-group">
                   <label>Phone Number *</label>
-                  <input type="tel" placeholder="+91 9876543210" required />
+                  <input name="phone" type="tel" placeholder="+91 9876543210" required />
                 </div>
                 <div className="form-group">
                   <label>Number of Travelers *</label>
-                  <select required>
+                  <select name="travelers" required>
                     <option value="">Select</option>
                     <option>1 Person</option>
                     <option>2 People</option>
@@ -52,7 +70,7 @@ function Enquiry() {
               <div className="form-row2">
                 <div className="form-group">
                   <label>Destination *</label>
-                  <select required>
+                  <select name="destination" required>
                     <option value="">Select Destination</option>
                     <option>Maldives</option>
                     <option>Goa</option>
@@ -66,7 +84,7 @@ function Enquiry() {
                 </div>
                 <div className="form-group">
                   <label>Budget per Person</label>
-                  <select>
+                  <select name="budget">
                     <option value="">Select Budget</option>
                     <option>Under ₹10,000</option>
                     <option>₹10,000 – ₹20,000</option>
@@ -78,11 +96,11 @@ function Enquiry() {
               <div className="form-row2">
                 <div className="form-group">
                   <label>Travel Date</label>
-                  <input type="date" />
+                  <input name="travelDate" type="date" />
                 </div>
                 <div className="form-group">
                   <label>Tour Duration</label>
-                  <select>
+                  <select name="duration">
                     <option>1–3 Days</option>
                     <option>4–6 Days</option>
                     <option>7–10 Days</option>
@@ -92,7 +110,7 @@ function Enquiry() {
               </div>
               <div className="form-group">
                 <label>Special Requirements / Message</label>
-                <textarea rows="5" placeholder="Any special requests, dietary requirements, accessibility needs, etc." />
+                <textarea name="message" rows="5" placeholder="Any special requests, dietary requirements, accessibility needs, etc." />
               </div>
               <button type="submit" className="form-full-btn" style={{ background: 'linear-gradient(135deg,#00B4FF,#0080cc)', color: 'white' }}>
                 Submit Enquiry 🚀

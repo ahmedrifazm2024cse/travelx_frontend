@@ -1,9 +1,26 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { apiPost } from '../api'
 import './Booking.css'
 
 function Booking() {
+  const [status, setStatus] = useState('')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const fd = new FormData(e.target)
+    const token = localStorage.getItem('tx_token')
+    try {
+      await apiPost('/api/bookings', Object.fromEntries(fd), token)
+      setStatus('success')
+      e.target.reset()
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -33,25 +50,27 @@ function Booking() {
           {/* Form */}
           <div className="booking-form-box light-form">
             <h3>Personal Information</h3>
-            <form>
+            {status === 'success' && <p style={{ color: '#16a34a', marginBottom: '16px' }}>✅ Booking confirmed successfully!</p>}
+            {status === 'error' && <p style={{ color: '#dc2626', marginBottom: '16px' }}>❌ Booking failed. Please try again.</p>}
+            <form onSubmit={handleSubmit}>
               <div className="form-row2">
                 <div className="form-group">
                   <label>First Name *</label>
-                  <input type="text" placeholder="First name" required />
+                  <input name="firstName" type="text" placeholder="First name" required />
                 </div>
                 <div className="form-group">
                   <label>Last Name *</label>
-                  <input type="text" placeholder="Last name" required />
+                  <input name="lastName" type="text" placeholder="Last name" required />
                 </div>
               </div>
               <div className="form-row2">
                 <div className="form-group">
                   <label>Email Address *</label>
-                  <input type="email" placeholder="your@email.com" required />
+                  <input name="email" type="email" placeholder="your@email.com" required />
                 </div>
                 <div className="form-group">
                   <label>Phone Number *</label>
-                  <input type="tel" placeholder="+91 9876543210" required />
+                  <input name="phone" type="tel" placeholder="+91 9876543210" required />
                 </div>
               </div>
 
@@ -59,7 +78,7 @@ function Booking() {
               <div className="form-row2">
                 <div className="form-group">
                   <label>Select Package *</label>
-                  <select required>
+                  <select name="package" required>
                     <option value="">Choose a package</option>
                     <option>Maldives Paradise – ₹25,000</option>
                     <option>Ooty Hill Station – ₹12,000</option>
@@ -71,7 +90,7 @@ function Booking() {
                 </div>
                 <div className="form-group">
                   <label>Number of Travelers *</label>
-                  <select required>
+                  <select name="travelers" required>
                     <option>1 Person</option>
                     <option>2 People</option>
                     <option>3 People</option>
@@ -83,11 +102,11 @@ function Booking() {
               <div className="form-row2">
                 <div className="form-group">
                   <label>Travel Date *</label>
-                  <input type="date" required />
+                  <input name="travelDate" type="date" required />
                 </div>
                 <div className="form-group">
                   <label>Room Type</label>
-                  <select>
+                  <select name="roomType">
                     <option>Standard Room</option>
                     <option>Deluxe Room</option>
                     <option>Suite</option>
@@ -108,7 +127,7 @@ function Booking() {
 
               <div className="form-group" style={{ marginTop: '20px' }}>
                 <label>Special Requests</label>
-                <textarea rows="3" placeholder="Any dietary needs, accessibility requirements or special requests..." />
+                <textarea name="specialRequests" rows="3" placeholder="Any dietary needs, accessibility requirements or special requests..." />
               </div>
 
               <label className="check-label" style={{ marginBottom: '20px', display: 'flex', color: '#475569' }}>

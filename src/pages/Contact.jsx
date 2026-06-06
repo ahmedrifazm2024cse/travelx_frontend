@@ -1,9 +1,25 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
+import { apiPost } from '../api'
 import './Contact.css'
 
 function Contact() {
+  const [status, setStatus] = useState('')
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    const fd = new FormData(e.target)
+    try {
+      await apiPost('/api/contact', Object.fromEntries(fd))
+      setStatus('success')
+      e.target.reset()
+    } catch {
+      setStatus('error')
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -39,28 +55,30 @@ function Contact() {
           <div className="contact-form-box light-form">
             <h3>Send Us a Message</h3>
             <p style={{ color: '#64748b', fontSize: '14px', marginBottom: '28px' }}>Fill in the form and we'll get back to you within 24 hours.</p>
-            <form>
+            <form onSubmit={handleSubmit}>
+              {status === 'success' && <p style={{ color: '#16a34a', marginBottom: '16px' }}>✅ Message sent successfully!</p>}
+              {status === 'error' && <p style={{ color: '#dc2626', marginBottom: '16px' }}>❌ Failed to send. Please try again.</p>}
               <div className="form-row">
                 <div className="form-group">
                   <label>First Name</label>
-                  <input type="text" placeholder="Your first name" />
+                  <input name="firstName" type="text" placeholder="Your first name" />
                 </div>
                 <div className="form-group">
                   <label>Last Name</label>
-                  <input type="text" placeholder="Your last name" />
+                  <input name="lastName" type="text" placeholder="Your last name" />
                 </div>
               </div>
               <div className="form-group">
                 <label>Email Address</label>
-                <input type="email" placeholder="your@email.com" />
+                <input name="email" type="email" placeholder="your@email.com" />
               </div>
               <div className="form-group">
                 <label>Phone Number</label>
-                <input type="tel" placeholder="+91 9876543210" />
+                <input name="phone" type="tel" placeholder="+91 9876543210" />
               </div>
               <div className="form-group">
                 <label>Subject</label>
-                <select>
+                <select name="subject">
                   <option>Tour Package Inquiry</option>
                   <option>Booking Support</option>
                   <option>Cancellation / Refund</option>
@@ -69,7 +87,7 @@ function Contact() {
               </div>
               <div className="form-group">
                 <label>Message</label>
-                <textarea rows="5" placeholder="Write your message here..." />
+                <textarea name="message" rows="5" placeholder="Write your message here..." />
               </div>
               <button type="submit" className="form-full-btn" style={{ background: 'linear-gradient(135deg,#00B4FF,#0080cc)', color: 'white' }}>Send Message 📤</button>
             </form>
