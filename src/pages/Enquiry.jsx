@@ -12,7 +12,7 @@ function Enquiry() {
     e.preventDefault()
     const fd = new FormData(e.target)
     try {
-      await apiPost('/api/enquiry', Object.fromEntries(fd))
+      await apiPost('https://travelx-2-2liv.onrender.com/api/enquiry', Object.fromEntries(fd))
       setStatus('success')
       e.target.reset()
     } catch {

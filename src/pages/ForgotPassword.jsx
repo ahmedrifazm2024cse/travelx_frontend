@@ -4,22 +4,31 @@ import { apiPost } from '../api'
 import './Auth.css'
 
 function ForgotPassword() {
-  const [email, setEmail] = useState('')
-  const [error, setError] = useState('')
+  const [email, setEmail]     = useState('')
+  const [error, setError]     = useState('')
   const [success, setSuccess] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const validate = () => {
+    if (!email.trim())                              return 'Email is required'
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return 'Enter a valid email address'
+    return ''
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault()
     setError(''); setSuccess('')
+    const err = validate()
+    if (err) { setError(err); return }
 
-    if (!email.trim()) { setError('Email is required'); return }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setError('Enter a valid email address'); return }
-
+    setLoading(true)
     try {
-      await apiPost('/api/auth/forgot-password', { email: email.trim() })
-      setSuccess(`Password reset link sent to ${email}. Please check your inbox.`)
+      const data = await apiPost('https://travelx-2-2liv.onrender.com/api/user/forgot-password', { email: email.trim() })
+      setSuccess(data.message)
     } catch (err) {
       setError(err.message || 'No account found with this email.')
+    } finally {
+      setLoading(false)
     }
   }
 
@@ -31,23 +40,21 @@ function ForgotPassword() {
         <h2>Forgot Password?</h2>
         <p className="auth-sub">Enter your registered email to receive a reset link.</p>
 
-        {error   && <div className="auth-error">{error}</div>}
-        {success && <div className="auth-success">{success}</div>}
+        {error   && <div className="auth-error">❌ {error}</div>}
+        {success && <div className="auth-success">✅ {success}</div>}
 
         {!success && (
           <form onSubmit={handleSubmit} noValidate>
             <div className="form-group">
               <label>Email Address *</label>
-              <input
-                type="email"
-                placeholder="your@email.com"
-                value={email}
+              <input type="email" placeholder="your@email.com" value={email}
                 onChange={e => { setEmail(e.target.value); setError('') }}
-                className={error ? 'input-error' : ''}
-              />
+                className={error ? 'input-error' : ''} />
               {error && <span className="err-msg">{error}</span>}
             </div>
-            <button type="submit" className="form-full-btn">Send Reset Link 📧</button>
+            <button type="submit" className="form-full-btn" disabled={loading}>
+              {loading ? '⏳ Sending...' : 'Send Reset Link 📧'}
+            </button>
           </form>
         )}
 
