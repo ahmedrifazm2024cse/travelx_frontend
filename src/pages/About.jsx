@@ -7,12 +7,12 @@ const team = [
   {
     name: "Ahmed Rifaz",
     role: "CEO & Founder",
-    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=400&auto=format&fit=crop",
+    img: "/rifaz.jpeg",
   },
   {
     name: "Dharun Kumar",
     role: "Head of Operations",
-    img: "/WhatsApp Image 2026-06-03 at 10.43.45 AM.jpeg",
+    img: "/dharun.jpeg",
   },
   { name: "Kamalakannan", role: "Tour Specialist", img: "/kamal.jpeg" },
   { name: "Abinaya", role: "Customer Relations", img: "/abi.jpeg" },
