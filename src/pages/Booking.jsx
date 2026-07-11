@@ -13,11 +13,7 @@ function Booking() {
     const fd = new FormData(e.target);
     const token = localStorage.getItem("tx_token");
     try {
-      await apiPost(
-        "https://travelx-2-2liv.onrender.com/api/bookings",
-        Object.fromEntries(fd),
-        token,
-      );
+      await apiPost("/api/bookings", Object.fromEntries(fd), token);
       setStatus("success");
       e.target.reset();
     } catch {
